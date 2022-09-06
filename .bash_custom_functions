@@ -1,0 +1,42 @@
+extract () {
+  if [ -f $1 ] ; then
+      case $1 in
+          *.tar.bz2)   tar xvjf $1    ;;
+          *.tar.gz)    tar xvzf $1    ;;
+          *.bz2)       bunzip2 $1     ;;
+          *.rar)       rar x $1       ;;
+          *.gz)        gunzip $1      ;;
+          *.tar)       tar xvf $1     ;;
+          *.tbz2)      tar xvjf $1    ;;
+          *.tgz)       tar xvzf $1    ;;
+          *.zip)       unzip $1       ;;
+          *.Z)         uncompress $1  ;;
+          *.7z)        7z x $1        ;;
+          *)           echo "don't know how to extract '$1'..." ;;
+      esac
+  else
+      echo "'$1' is not a valid file!"
+  fi
+}
+
+tally() {
+  if [[ $1 == '--help' ]]; then
+    echo "Usage: ls | tally";
+    return 0;
+  fi
+  
+  sort | uniq -c | sort -n
+}
+
+### Sync function for my current workflow, which only has a remote origin.
+### Fetches origin and rebases current branch from origin.
+gsync (){
+  local BRANCH=`git rev-parse --abbrev-ref HEAD`
+  echo "Syncing the current branch: $BRANCH"
+  echo "===== 1/2: fetching origin =====" \
+  && git fetch origin \
+  && echo "===== 2/2: rebasing $BRANCH =====" \
+  && git rebase origin/$BRANCH \
+  && echo "=====" \
+  && echo "Syncing finished."
+}
