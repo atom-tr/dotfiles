@@ -53,7 +53,7 @@
           "powerline_symbol": "\ue0b0",
           "properties": {
             "folder_icon": "\u2026",
-            "folder_separator_icon": "\ue0b1 ",
+            "folder_separator_icon": " \ue0b1 ",
             "style": "agnoster_short",
             "max_depth": 3
           },
