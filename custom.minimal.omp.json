@@ -2,31 +2,16 @@
   "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
   "blocks": [
     {
-      "type": "rprompt",
-      "segments": [
-        {
+      "alignment": "left",
+      "segments": [ {
           "background": "#303030",
           "foreground": "#3C873A",
           "leading_diamond": "\ue0b2",
           "trailing_diamond": "\ue0b0",
           "style": "diamond",
-          "template": " {{ .UserName }}@{{ .HostName }} ",
+          "template": " {{ .UserName }} ",
           "type": "session"
         },
-        {
-          "foreground": "#ffffff",
-          "properties": {
-            "time_format": "15:04:05"
-          },
-          "style": "plain",
-          "template": " {{ .CurrentDate | date .Format }} ",
-          "type": "time"
-        }
-      ]
-    },
-    {
-      "alignment": "left",
-      "segments": [
         {
           "foreground": "#ffffff",
           "style": "plain",
