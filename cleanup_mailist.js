@@ -12,7 +12,7 @@ async function cleanSubject() {
         if  (/.*((is CRITICAL)|(DOWN)!)/.test(cleanedText)) {
           sender?.append('..  🤬')
           if (sender) sender.style.color = "#DC626D"
-        } else if (/.*(((is OK)|(UP)!)|successful)/.test(cleanedText)) or (/(Success on).*/.test(cleanedText)) {
+        } else if ((/.*(((is OK)|(UP)!)|successful)/.test(cleanedText)) || (/(Success on).*/.test(cleanedText))) {
           sender?.append('..  😍')
           if (sender) sender.style.color = "#5EC75A"
         } 
