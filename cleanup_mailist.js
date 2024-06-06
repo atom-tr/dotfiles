@@ -8,6 +8,14 @@ async function cleanSubject() {
           ''
         );
         span.innerText = cleanedText;
+        const sender = span.parentElement?.parentElement?.nextElementSibling?.firstChild
+        if  (/.*((is CRITICAL)|(DOWN)!)/.test(cleanedText)) {
+          sender?.append('..  🤬')
+          sender?.style.color = "#DC626D"
+        } else if (/.*(((is OK)|(UP)!)|successful)/.test(cleanedText)) or (/(Success on).*/.test(cleanedText)) {
+          sender?.append('..  😍')
+          sender?.style.color = "#5EC75A"
+        } 
         resolve();
       }, 50);
     });
