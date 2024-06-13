@@ -36,5 +36,24 @@ async function cleanSubject() {
   }
 }
 
-const observer = new MutationObserver(cleanSubject);
-observer.observe(document.body, { childList: true });
+function debounce(fn, delay) {
+  let timeoutId;
+  return function (...args) {
+    if (timeoutId) clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => fn(...args), delay);
+  };
+}
+
+const debouncedCleanSubject = debounce(cleanSubject, 100);
+
+// Initial cleaning of existing subjects
+cleanSubject().then(() => {
+  console.log('Initial subject cleaning completed.');
+});
+
+// Observe the document for changes and run cleanSubject when changes occur
+const observer = new MutationObserver(() => {
+  debouncedCleanSubject();
+});
+
+observer.observe(document.body, { childList: true, subtree: true });
