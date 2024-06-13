@@ -1,29 +1,39 @@
+async function isInViewport(el) {
+  const rect = el.getBoundingClientRect();
+  return (
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+  );
+}
+
 async function cleanSubject() {
   const subjectSpans = document.querySelectorAll('#MailList span[title]');
-  await Promise.all(Array.from(subjectSpans).map((span) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        if (span.dataset.subjectChecked == 'OK') return
-        span.dataset.subjectChecked = 'OK'
-        const cleanedText = span.innerText.replace(
-          /^(?!.*Request\sID\s\[#RE-\d+#\]).*(R(e|E):\s)?\[#R(E|e)-\d+#\]\s?\:\s*/g,
-          ''
-        );
-        span.innerText = cleanedText;
-        const sender = span.parentElement?.parentElement?.nextElementSibling?.firstChild
-        if (sender && (sender.innerText !== 'Support')) {
-          if  (/.*((is CRITICAL)|(DOWN)!)/.test(cleanedText) || (/(Failure on).*/.test(cleanedText))) {
-              sender?.append('..  🤬')
-              sender.style.color = "#DC626D"
-          } else if ((/.*(((is OK)|(UP)!)|successful)/.test(cleanedText)) || (/(Success on).*/.test(cleanedText))) {
-              sender?.append('..  😍')
-              sender.style.color = "#5EC75A"
-          } 
-        }
-        resolve();
-      }, 50);
-    });
-  }));
+
+  for (const span of subjectSpans) {
+    if (!(await isInViewport(span))) continue;
+    if (span.dataset.subjectChecked === 'OK') continue;
+
+    span.dataset.subjectChecked = 'OK';
+
+    const cleanedText = span.innerText.replace(
+      /^(?!.*Request\sID\s\[#RE-\d+#\]).*(R(e|E):\s)?\[#R(E|e)-\d+#\]\s?\:\s*/g,
+      ''
+    );
+    span.innerText = cleanedText;
+
+    const sender = span.parentElement?.parentElement?.nextElementSibling?.firstChild;
+    if (sender && sender.innerText !== 'Support') {
+      if (/.*((is CRITICAL)|(DOWN)!)/.test(cleanedText) || /(Failure on).*/.test(cleanedText)) {
+        sender.append('..  🤬');
+        sender.style.color = "#DC626D";
+      } else if (/.*(((is OK)|(UP)!)|successful)/.test(cleanedText) || /(Success on).*/.test(cleanedText)) {
+        sender.append('..  😍');
+        sender.style.color = "#5EC75A";
+      }
+    }
+  }
 }
 
 const observer = new MutationObserver(cleanSubject);
