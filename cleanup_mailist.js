@@ -11,8 +11,8 @@ async function cleanSubject() {
         );
         span.innerText = cleanedText;
         const sender = span.parentElement?.parentElement?.nextElementSibling?.firstChild
-        if (sender) {
-          if  (/.*((is CRITICAL)|(DOWN)!)/.test(cleanedText) && (sender.innerText !== 'Support')) {
+        if (sender && (sender.innerText !== 'Support')) {
+          if  (/.*((is CRITICAL)|(DOWN)!)/.test(cleanedText) || (/(Failure on).*/.test(cleanedText))) {
               sender?.append('..  🤬')
               sender.style.color = "#DC626D"
           } else if ((/.*(((is OK)|(UP)!)|successful)/.test(cleanedText)) || (/(Success on).*/.test(cleanedText))) {
