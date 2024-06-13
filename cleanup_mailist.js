@@ -44,7 +44,7 @@ function debounce(fn, delay) {
   };
 }
 
-const debouncedCleanSubject = debounce(cleanSubject, 100);
+const debouncedCleanSubject = debounce(cleanSubject, 30);
 
 // Initial cleaning of existing subjects
 cleanSubject().then(() => {
